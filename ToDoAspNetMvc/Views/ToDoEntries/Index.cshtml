@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    bool showHidden = false;
 }
 
 <h1>Index</h1>
@@ -9,6 +10,9 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<div>
+    <input type="checkbox" asp-for="@showHidden">
+</div>
 <table class="table">
     <thead>
         <tr>

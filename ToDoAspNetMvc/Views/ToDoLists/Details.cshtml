@@ -28,3 +28,49 @@
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Due Date
+            </th>
+            <th>
+                Completed
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.EntryList)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DueDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Completed)
+                </td>
+                <td>
+                    <a asp-controller="ToDoEntries" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-controller="ToDoEntries" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-controller="ToDoEntries" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>
+    <a asp-controller="ToDoEntries" asp-action="Create">New entry</a> |
+</div>

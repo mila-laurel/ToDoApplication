@@ -18,7 +18,9 @@ namespace ToDoAspNetMvc.Controllers
         // GET: ToDoLists
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Lists.ToListAsync());
+            return View(await _context.Lists
+                .Include(l => l.EntryList)
+                .ToListAsync());
         }
 
         // GET: ToDoLists/Details/5
@@ -30,6 +32,7 @@ namespace ToDoAspNetMvc.Controllers
             }
 
             var toDoList = await _context.Lists
+                .Include(l => l.EntryList)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (toDoList == null)
             {
