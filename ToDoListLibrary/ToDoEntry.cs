@@ -6,6 +6,11 @@ namespace ToDoListLibrary
 {
     public class ToDoEntry
     {
+        public ToDoEntry()
+        {
+            
+        }
+
         public ToDoEntry(string title) 
         { 
             this.Title = title;
