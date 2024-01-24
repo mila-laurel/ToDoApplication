@@ -2,16 +2,13 @@
 
 @{
     ViewData["Title"] = "Index";
-    bool showHidden = false;
+    bool showCompleted = false;
 }
-
-<h1>Index</h1>
-
 <p>
     <a asp-action="Create">Create New</a>
 </p>
 <div>
-    <input type="checkbox" asp-for="@showHidden">
+    <input type="checkbox" asp-for="@showCompleted">
 </div>
 <table class="table">
     <thead>

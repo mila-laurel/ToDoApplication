@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -27,6 +28,7 @@ namespace ToDoListLibrary
             var entry = new ToDoEntry(title);
             context.Entities.Add(entry);
             entry.Owner = list;
+            entry.CreatedOn = DateTime.Now;
             context.SaveChanges();
             return entry;
         }

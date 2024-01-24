@@ -7,15 +7,9 @@
 <h1>Details</h1>
 
 <div>
-    <h4>ToDoList</h4>
+    <h4>@Html.DisplayFor(model => model.Title)</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Hide)
         </dt>
@@ -26,7 +20,7 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Back to Lists</a>
 </div>
 <table class="table">
     <thead>
@@ -72,5 +66,5 @@
     </tbody>
 </table>
 <div>
-    <a asp-controller="ToDoEntries" asp-action="Create">New entry</a> |
+    <a asp-controller="ToDoEntries" asp-action="Create">New ToDo</a> |
 </div>

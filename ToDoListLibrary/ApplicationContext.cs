@@ -15,10 +15,7 @@ namespace ToDoListLibrary
 
         public DbSet<ToDoEntry> Entities { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=todolistdatabase;Trusted_Connection=True;");
-        }
+        public DbSet<CustomField> CustomFields { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +23,10 @@ namespace ToDoListLibrary
                 .HasOne(p => p.Owner)
                 .WithMany(b => b.EntryList)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<CustomField>()
+                .HasOne<ToDoEntry>()
+                .WithMany(entry => entry.Fields);
         }
     }
 }
