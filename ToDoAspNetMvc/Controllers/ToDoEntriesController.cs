@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using ToDoListLibrary;
@@ -16,9 +17,22 @@ namespace ToDoAspNetMvc.Controllers
         }
 
         // GET: ToDoEntries
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string compare = null)
         {
-            return View(await _context.Entities.ToListAsync());
+            switch (compare)
+            {
+                case "equals":
+                    return View(await _context.Entities
+                .Where(e => e.DueDate.Date == DateTime.Today)
+                .ToListAsync());
+                case "less":
+                    return View(await _context.Entities
+                .Where(e => e.DueDate.Date < DateTime.Today)
+                .ToListAsync());
+                default:
+                    return View(await _context.Entities
+                .ToListAsync());
+            }
         }
 
         // GET: ToDoEntries/Details/5

@@ -1,7 +1,18 @@
-﻿@{
+﻿@model int
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
+    <p>
+        Today you have @Model tasks
+    </p>
+    <a class="navbar-brand" asp-area="" asp-controller="ToDoEntries" asp-action="Index" asp-route-compare="equals">Look what you have for today</a>
+    <p></p>
+    <p>
+        There are @Model tasks past due date
+    </p>
+    <a class="navbar-brand" asp-area="" asp-controller="ToDoEntries" asp-action="Index" asp-route-compare="less">Close fulfilled tasks or change their due date</a>
 </div>
