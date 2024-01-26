@@ -2,7 +2,6 @@
 
 @{
     ViewData["Title"] = "Index";
-    bool showHidden = false;
 }
 
 <p>
@@ -10,7 +9,7 @@
 </p>
 <div>
     <label class="form-check-label">Show hidden lists</label>
-    <input type="checkbox" asp-for="@showHidden">
+    @Html.CheckBox("ShowHidden", new { id = "ShowHidden" })
 </div>
 <table class="table">
     <thead>
@@ -25,8 +24,8 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Where(l => showHidden || !l.Hide)) {
-        <tr>
+@foreach (var item in Model) {
+        <tr class="@(item.Hide ? "row-to-hide" : "")" style="@(item.Hide ? "display:none" : "")" >
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
@@ -42,3 +41,20 @@
 }
     </tbody>
 </table>
+@section Scripts
+{
+    <script>
+        $(function () {
+            $('#ShowHidden').change(function () {
+                var hiddenRows = document.getElementsByClassName("row-to-hide");
+                for (var i = 0; i < hiddenRows.length; i++) {
+                    if (document.getElementById('ShowHidden').checked) {
+                        hiddenRows[i].style.display = "";
+                    } else {
+                        hiddenRows[i].style.display = "none";
+                    }
+                }
+            });
+        });
+    </script>
+}
