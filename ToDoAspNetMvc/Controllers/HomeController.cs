@@ -26,7 +26,10 @@ namespace ToDoAspNetMvc.Controllers
             var today = await _context.Entities
                 .Where(l => l.DueDate.Date == DateTime.Today)
                 .CountAsync();
-            return View(today);
+            var pastDueDate = await _context.Entities
+                .Where(l => l.DueDate.Date < DateTime.Today)
+                .CountAsync();
+            return View((today, pastDueDate));
         }
 
         public IActionResult Privacy()

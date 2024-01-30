@@ -21,8 +21,10 @@ namespace ToDoListLibrary
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
-        public ToDoList Owner { get; set; }
+        [ForeignKey("Owner")]
+        public int OwnerId { get; set; }
+
+        public virtual ToDoList Owner { get; set; }
 
         public string Title { get; set; }
 
@@ -38,9 +40,9 @@ namespace ToDoListLibrary
     }
 
     public enum Status 
-    { 
-        Completed,
+    {
+        NotStarted,
         InProgress,
-        NotStarted
+        Completed
     }
 }

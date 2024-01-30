@@ -12,6 +12,7 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
+            <input type="hidden" asp-for="OwnerId" value="@ViewBag.Owner" />
             <partial name="_ToDoEntryDetails" />
         </form>
     </div>

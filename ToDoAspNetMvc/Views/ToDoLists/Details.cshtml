@@ -66,5 +66,5 @@
     </tbody>
 </table>
 <div>
-    <a asp-controller="ToDoEntries" asp-action="Create">New ToDo</a> |
+    <a asp-controller="ToDoEntries" asp-action="Create" asp-route-owner="@(Model.Id)">New ToDo</a> |
 </div>

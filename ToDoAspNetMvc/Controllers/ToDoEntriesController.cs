@@ -54,8 +54,9 @@ namespace ToDoAspNetMvc.Controllers
         }
 
         // GET: ToDoEntries/Create
-        public IActionResult Create()
+        public IActionResult Create(int? owner)
         {
+            ViewBag.Owner = owner;
             return View();
         }
 
@@ -64,13 +65,14 @@ namespace ToDoAspNetMvc.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Description,DueDate,Completed")] ToDoEntry toDoEntry)
+        public async Task<IActionResult> Create([Bind("OwnerId,Id,Title,Description,DueDate,Completed")] ToDoEntry toDoEntry)
         {
             if (ModelState.IsValid)
             {
+                toDoEntry.CreatedOn = DateTime.Now;
                 _context.Add(toDoEntry);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), "ToDoLists", new { id = toDoEntry.OwnerId });
             }
             return View(toDoEntry);
         }

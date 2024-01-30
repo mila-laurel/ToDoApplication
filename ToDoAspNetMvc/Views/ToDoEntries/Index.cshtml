@@ -2,13 +2,13 @@
 
 @{
     ViewData["Title"] = "Index";
-    bool showCompleted = false;
 }
 <p>
     <a asp-action="Create">Create New</a>
 </p>
 <div>
-    <input type="checkbox" asp-for="@showCompleted">
+    <label class="form-check-label">Show completed</label>
+    @Html.CheckBox("ShowCompleted", new { id = "ShowCompleted" })
 </div>
 <table class="table">
     <thead>
@@ -30,7 +30,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+            <tr class="@(item.Completed == ToDoListLibrary.Status.Completed ? "row-to-hide" : "")" style="@(item.Completed == ToDoListLibrary.Status.Completed ? "display:none" : "")">
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
@@ -52,3 +52,20 @@
 }
     </tbody>
 </table>
+@section Scripts
+{
+    <script>
+        $(function () {
+            $('#ShowCompleted').change(function () {
+                var hiddenRows = document.getElementsByClassName("row-to-hide");
+                for (var i = 0; i < hiddenRows.length; i++) {
+                    if (document.getElementById('ShowCompleted').checked) {
+                        hiddenRows[i].style.display = "";
+                    } else {
+                        hiddenRows[i].style.display = "none";
+                    }
+                }
+            });
+        });
+    </script>
+}
