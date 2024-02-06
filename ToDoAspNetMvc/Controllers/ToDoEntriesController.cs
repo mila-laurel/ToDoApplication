@@ -98,7 +98,7 @@ namespace ToDoAspNetMvc.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,DueDate,Completed")] ToDoEntry toDoEntry)
+        public async Task<IActionResult> Edit(int id, [Bind("OwnerId,Id,Title,Description,DueDate,Completed")] ToDoEntry toDoEntry)
         {
             if (id != toDoEntry.Id)
             {
@@ -123,9 +123,9 @@ namespace ToDoAspNetMvc.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), "ToDoLists");
             }
-            return View(toDoEntry);
+            return RedirectToAction(nameof(Details), "ToDoLists", new { id = toDoEntry.OwnerId });
         }
 
         // GET: ToDoEntries/Delete/5

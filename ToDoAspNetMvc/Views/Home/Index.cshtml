@@ -6,13 +6,11 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>
+    <a asp-area="" class="btn btn-default btn-lg" asp-controller="ToDoEntries" asp-action="Index" asp-route-compare="equals">
         Today you have @(Model.Item1) tasks
-    </p>
-    <a class="navbar-brand" asp-area="" asp-controller="ToDoEntries" asp-action="Index" asp-route-compare="equals">Look what you have for today</a>
+    </a>
     <p></p>
-    <p>
+    <a asp-area="" style="color:darkred" class="btn btn-default btn-lg" asp-controller="ToDoEntries" asp-action="Index" asp-route-compare="less">
         There are @(Model.Item2) tasks past due date
-    </p>
-    <a hidden="@(Model.Item2 == 0)" class="navbar-brand" asp-area="" asp-controller="ToDoEntries" asp-action="Index" asp-route-compare="less">Close fulfilled tasks or change their due date</a>
+    </a>
 </div>

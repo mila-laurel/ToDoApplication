@@ -43,7 +43,7 @@
     <tbody>
         @foreach (var item in Model.EntryList)
         {
-            <tr>
+            <tr onclick="location.href='@(Url.Action("Details", "ToDoEntries", new { id=item.Id }))'">
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
@@ -57,9 +57,9 @@
                     @Html.DisplayFor(modelItem => item.Completed)
                 </td>
                 <td>
-                    <a asp-controller="ToDoEntries" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-controller="ToDoEntries" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-controller="ToDoEntries" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a class="btn btn-default btn-sm" asp-controller="ToDoEntries" asp-action="Delete" asp-route-id="@item.Id">
+                        <span class="glyphicon glyphicon-trash"></span>Delete
+                    </a>
                 </td>
             </tr>
         }
