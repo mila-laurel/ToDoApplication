@@ -65,7 +65,7 @@ namespace ToDoAspNetMvc.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OwnerId,Id,Title,Description,DueDate,Completed")] ToDoEntry toDoEntry)
+        public async Task<IActionResult> Create([Bind("OwnerId,Id,Title,Description,DueDate,Completed,Fields")] ToDoEntry toDoEntry)
         {
             if (ModelState.IsValid)
             {
@@ -98,7 +98,7 @@ namespace ToDoAspNetMvc.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OwnerId,Id,Title,Description,DueDate,Completed")] ToDoEntry toDoEntry)
+        public async Task<IActionResult> Edit(int id, [Bind("OwnerId,Id,Title,Description,DueDate,Completed,Fields")] ToDoEntry toDoEntry)
         {
             if (id != toDoEntry.Id)
             {
@@ -109,6 +109,11 @@ namespace ToDoAspNetMvc.Controllers
             {
                 try
                 {
+                    if (toDoEntry.Fields.Any())
+                    {
+                        foreach (var field in toDoEntry.Fields)
+                            _context.Update(field);
+                    }
                     _context.Update(toDoEntry);
                     await _context.SaveChangesAsync();
                 }
@@ -123,9 +128,9 @@ namespace ToDoAspNetMvc.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index), "ToDoLists");
+                return RedirectToAction(nameof(Details), "ToDoLists", new { id = toDoEntry.OwnerId });
             }
-            return RedirectToAction(nameof(Details), "ToDoLists", new { id = toDoEntry.OwnerId });
+            return View(toDoEntry);
         }
 
         // GET: ToDoEntries/Delete/5
@@ -152,9 +157,10 @@ namespace ToDoAspNetMvc.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var toDoEntry = await _context.Entities.FindAsync(id);
+            var ownerId = toDoEntry.OwnerId;
             _context.Entities.Remove(toDoEntry);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), "ToDoLists", new { id = ownerId });
         }
 
         private bool ToDoEntryExists(int id)

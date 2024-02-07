@@ -40,6 +40,8 @@
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <a class="btn btn-default btn-lg" asp-action="Details" asp-controller="ToDoLists" asp-route-id="@Model.OwnerId">
+            <span class="bi bi-arrow-left"></span>Back to List
+        </a>
     </form>
 </div>

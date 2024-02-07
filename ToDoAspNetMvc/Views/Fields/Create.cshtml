@@ -1,0 +1,33 @@
+﻿@using ToDoListLibrary
+@model ToDoListLibrary.CustomField
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <input type="hidden" asp-for="OwnerId" value="@ViewBag.Owner" />
+            <div class="form-group">
+                <input asp-for="Name" class="control-label"/>
+                <input asp-for="Value" class="form-control" />
+            </div>
+        </form>
+    </div>
+</div>
+<div class="form-group">
+    <input type="submit" value="Save" class="btn btn-primary" />
+</div>
+<div>
+    <a class="btn btn-default btn-lg" asp-action="Edit" asp-controller="ToDoEntries" asp-route-id="@ViewBag.Owner">
+        <span class="bi bi-arrow-left"></span>Back to item
+    </a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

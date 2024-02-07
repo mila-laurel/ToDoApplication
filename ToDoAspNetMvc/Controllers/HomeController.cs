@@ -24,10 +24,10 @@ namespace ToDoAspNetMvc.Controllers
         public async Task<IActionResult> Index()
         {
             var today = await _context.Entities
-                .Where(l => l.DueDate.Date == DateTime.Today)
+                .Where(l => l.Completed != Status.Completed && l.DueDate.Date == DateTime.Today)
                 .CountAsync();
             var pastDueDate = await _context.Entities
-                .Where(l => l.DueDate.Date < DateTime.Today)
+                .Where(l => l.Completed != Status.Completed && l.DueDate.Date < DateTime.Today)
                 .CountAsync();
             return View((today, pastDueDate));
         }

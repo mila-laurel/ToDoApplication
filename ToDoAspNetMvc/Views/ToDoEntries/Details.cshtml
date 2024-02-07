@@ -4,18 +4,11 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>@(Model.Title)</h1>
 
 <div>
-    <h4>ToDoEntry</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
@@ -34,13 +27,22 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Completed)
         </dd>
+        @foreach (var item in Model.Fields)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => item.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => item.Value)
+            </dd>
+        }
     </dl>
 </div>
 <div>
-    <a class="btn btn-info btn-lg" asp-action="Edit" asp-route-id="@Model.Id">
-        <span class="glyphicon glyphicon-pencil"></span>Edit
+    <a class="btn btn-default btn-lg" asp-action="Edit" asp-route-id="@Model.Id">
+        <span class="bi bi-pencil"></span>
     </a> |
-    <a asp-action="Index">
-        <span class="glyphicon glyphicon-chevron-left"></span>Back to List
+    <a class="btn btn-default btn-lg" asp-action="Details" asp-controller="ToDoLists" asp-route-id="@Model.OwnerId">
+        <span class="bi bi-arrow-left"></span>Back to List
     </a>
 </div>

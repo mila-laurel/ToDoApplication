@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace ToDoListLibrary
 {
@@ -30,13 +31,15 @@ namespace ToDoListLibrary
 
         public string Description { get; set; }
 
+        [DisplayName("Due date")]
         public DateTime DueDate { get; set; }
 
+        [DisplayName("Status")]
         public Status Completed { get; set; } = Status.NotStarted;
 
         public DateTime CreatedOn { get; set; }
 
-        public List<CustomField> Fields { get; set; }
+        public List<CustomField> Fields { get; set; } = new List<CustomField>();
     }
 
     public enum Status 
