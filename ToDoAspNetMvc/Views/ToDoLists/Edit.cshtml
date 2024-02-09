@@ -17,7 +17,9 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a class="btn btn-default btn-lg" asp-action="Details" asp-route-id="@Model.Id">
+        <span class="bi bi-arrow-left"></span>Back to List
+    </a>
 </div>
 
 @section Scripts {

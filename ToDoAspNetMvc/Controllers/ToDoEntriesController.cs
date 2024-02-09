@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using ToDoAspNetMvc.ViewModels;
 using ToDoListLibrary;
 
 namespace ToDoAspNetMvc.Controllers
@@ -44,6 +46,7 @@ namespace ToDoAspNetMvc.Controllers
             }
 
             var toDoEntry = await _context.Entities
+                .Include(l => l.Fields)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (toDoEntry == null)
             {
@@ -77,6 +80,64 @@ namespace ToDoAspNetMvc.Controllers
             return View(toDoEntry);
         }
 
+        // GET: ToDoEntries/Create
+        public async Task<IActionResult> CreateCopy(int? initial)
+        {
+            if (initial == null)
+            {
+                return NotFound();
+            }
+
+            var toDoEntry = await _context.Entities.Include(l => l.Fields).FirstOrDefaultAsync(e => e.Id == initial);
+            if (toDoEntry == null)
+            {
+                return NotFound();
+            }
+            var todolists = await _context.Lists.ToListAsync();
+            var vm = new ToDoEntryViewModel()
+            {
+                OwnerId = toDoEntry.OwnerId,
+                Title = toDoEntry.Title,
+                Description = toDoEntry.Description,
+                DueDate = toDoEntry.DueDate,
+                Completed = toDoEntry.Completed,
+                Fields = toDoEntry.Fields,
+                ToDoLists = todolists.Select(l => new SelectListItem { Text = l.Title, Value = l.Id.ToString() }).ToList()
+            };
+            return View(vm);
+        }
+
+        // POST: ToDoEntries/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateCopy([Bind("OwnerId,Title,Description,DueDate,Completed,Fields")] ToDoEntryViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                var toDoEntry = new ToDoEntry()
+                {
+                    OwnerId = vm.OwnerId,
+                    Title = vm.Title,
+                    Description = vm.Description,
+                    DueDate = vm.DueDate,
+                    Completed = vm.Completed,
+                    CreatedOn = DateTime.Now
+                };
+                _context.Add(toDoEntry);
+                foreach (var field in vm.Fields)
+                {
+                    field.ToDoEntryId = toDoEntry.Id;
+                    _context.Add(field);
+                }
+                
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Details), "ToDoLists", new { id = toDoEntry.OwnerId });
+            }
+            return View(vm);
+        }
+
         // GET: ToDoEntries/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -85,7 +146,7 @@ namespace ToDoAspNetMvc.Controllers
                 return NotFound();
             }
 
-            var toDoEntry = await _context.Entities.FindAsync(id);
+            var toDoEntry = await _context.Entities.Include(l => l.Fields).FirstOrDefaultAsync(e => e.Id == id);
             if (toDoEntry == null)
             {
                 return NotFound();

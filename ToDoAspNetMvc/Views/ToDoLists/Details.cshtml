@@ -4,10 +4,9 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>@Html.DisplayFor(model => model.Title)</h1>
 
 <div>
-    <h4>@Html.DisplayFor(model => model.Title)</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -19,8 +18,17 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to Lists</a>
+    <a class="btn btn-default btn-lg" asp-action="Edit" asp-route-id="@Model.Id">
+        <span class="bi bi-pencil"></span>
+    </a> |
+    <a class="btn btn-default btn-lg" asp-action="Index">
+        <span class="bi bi-arrow-left"></span>Back to Lists
+        </a>
+</div>
+
+<div class="form-check form-switch">
+    <label class="form-check-label" for="ShowCompleted">Show completed</label>
+    @Html.CheckBox("ShowCompleted", new { id = "ShowCompleted", @class = "form-check-input" })
 </div>
 <table class="table">
     <thead>
@@ -43,7 +51,8 @@
     <tbody>
         @foreach (var item in Model.EntryList)
         {
-            <tr onclick="location.href='@(Url.Action("Details", "ToDoEntries", new { id=item.Id }))'">
+            <tr onclick="location.href='@(Url.Action("Details", "ToDoEntries", new { id=item.Id }))'"
+                class="@(item.Completed == ToDoListLibrary.Status.Completed ? "row-to-hide" : "")" style="@(item.Completed == ToDoListLibrary.Status.Completed ? "display:none" : "")">
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
@@ -59,6 +68,9 @@
                 <td>
                     <a class="btn btn-default btn-lg" asp-controller="ToDoEntries" asp-action="Delete" asp-route-id="@item.Id">
                         <span class="bi bi-trash"></span>
+                    </a> |
+                    <a class="btn btn-default btn-lg" asp-controller="ToDoEntries" asp-action="CreateCopy" asp-route-initial="@item.Id">
+                        <span class="bi bi-copy"></span>
                     </a>
                 </td>
             </tr>
@@ -68,5 +80,5 @@
 <div>
     <a class="btn btn-default btn-lg" asp-controller="ToDoEntries" asp-action="Create" asp-route-owner="@(Model.Id)">
         <span class="bi bi-plus-circle"></span>New Item
-        </a> |
+    </a>
 </div>

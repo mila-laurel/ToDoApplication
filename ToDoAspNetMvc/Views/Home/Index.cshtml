@@ -7,10 +7,10 @@
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <a asp-area="" class="btn btn-default btn-lg" asp-controller="ToDoEntries" asp-action="Index" asp-route-compare="equals">
-        Today you have @(Model.Item1) tasks
+        Today you have @(Model.Item1) not completed tasks
     </a>
     <p></p>
     <a asp-area="" style="color:red" class="btn btn-default btn-lg" asp-controller="ToDoEntries" asp-action="Index" asp-route-compare="less">
-        There are @(Model.Item2) tasks past due date
+        There are @(Model.Item2) not completed tasks past due date
     </a>
 </div>

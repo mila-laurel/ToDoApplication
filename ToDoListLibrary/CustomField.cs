@@ -9,8 +9,7 @@ namespace ToDoListLibrary
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [ForeignKey("Owner")]
-        public int OwnerId { get; set; }
+        public int ToDoEntryId { get; set; }
 
         public string Name { get; set; }
 

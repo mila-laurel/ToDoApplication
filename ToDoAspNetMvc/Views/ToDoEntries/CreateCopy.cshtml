@@ -1,0 +1,68 @@
+﻿@using ToDoListLibrary
+@model ToDoAspNetMvc.ViewModels.ToDoEntryViewModel
+
+@{
+    ViewData["Title"] = "CreatCopy";
+}
+
+<h1>Create copy</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateCopy">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label class="control-label">Select to do list to put this item into</label>
+                <select asp-for="OwnerId" asp-items="@Model.ToDoLists" class="form-control">
+                <span asp-validation-for="OwnerId" class="text-danger"></span>
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DueDate" class="control-label"></label>
+                <input asp-for="DueDate" class="form-control" />
+                <span asp-validation-for="DueDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Completed" class="control-label"></label>
+                <select asp-for="Completed" asp-items="Html.GetEnumSelectList<Status>()" class="form-control"></select>
+            </div>
+            @{
+                if (Model != null)
+                {
+                    foreach (var item in Model?.Fields)
+                    {
+                        <div class="form-group">
+                            <input asp-for="@item.Name" class="control-label" />
+                            <input asp-for="@item.Value" class="form-control" />
+                        </div>
+                    }
+                }
+            }
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="btn btn-default btn-lg" asp-action="Details" asp-controller="ToDoLists" asp-route-id="@Model.OwnerId">
+        <span class="bi bi-arrow-left"></span>Back to List
+    </a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

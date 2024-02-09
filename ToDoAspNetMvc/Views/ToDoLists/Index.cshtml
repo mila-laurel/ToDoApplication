@@ -5,11 +5,13 @@
 }
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a class="btn btn-default btn-lg" asp-action="Create" >
+        <span class="bi bi-plus-circle"></span>New List
+    </a>
 </p>
-<div>
-    <label class="form-check-label">Show hidden lists</label>
-    @Html.CheckBox("ShowHidden", new { id = "ShowHidden" })
+<div class="form-check form-switch"> 
+    <label class="form-check-label" for="ShowHidden">Show hidden lists</label>
+    @Html.CheckBox("ShowHidden", new { id = "ShowHidden" , @class = "form-check-input" })   
 </div>
 <table class="table">
     <thead>

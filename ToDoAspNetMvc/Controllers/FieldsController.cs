@@ -25,15 +25,27 @@ namespace ToDoAspNetMvc.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OwnerId,Id,Name,Value")] CustomField field)
+        public async Task<IActionResult> Create([Bind("ToDoEntryId,Id,Name,Value")] CustomField field)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(field);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Edit", "ToDoEntry", new { id = field.OwnerId });
+                return RedirectToAction("Edit", "ToDoEntries", new { id = field.ToDoEntryId });
             }
             return View(field);
+        }
+
+        // POST: Fields/Delete/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var field = await _context.CustomFields.FindAsync(id);
+            var ownerId = field.ToDoEntryId;
+            _context.CustomFields.Remove(field);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details", "ToDoEntries", new { id = ownerId });
         }
     }
 }

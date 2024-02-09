@@ -26,14 +26,24 @@
     {
         foreach (var item in Model?.Fields)
         {
+
             <div class="form-group">
-                <input asp-for="@item.Name" class="control-label" />
-                <input asp-for="@item.Value" class="form-control" />
+                <div class="col-sm-6">
+                    <input asp-for="@item.Name" class="control-label" />
+                    <input asp-for="@item.Value" class="form-control" />
+                </div>
+                <div class="col-sm-6">
+                    <form  asp-controller="Fields" asp-action="Delete">
+                        <input type="hidden" asp-for="@item.Id" />
+                        <button type="submit" class="btn btn-default btn-sm bi bi-backspace" style="color:red" ></button>
+                    </form>
+                </div>
             </div>
         }
+
         <div>
-            <a class="btn btn-default btn-lg" asp-action="Create" asp-controller="Fields" asp-route-id="@Model.Id">
-                <span class="bi bi-plus-square"></span>Add new fields
+            <a class="btn btn-default btn-sm" asp-action="Create" asp-controller="Fields" asp-route-owner="@Model.Id">
+                <span class="bi bi-plus-square"></span> Add new fields
             </a>
         </div>
     }
