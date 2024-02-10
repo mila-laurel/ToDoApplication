@@ -1,8 +1,10 @@
-﻿@using ToDoListLibrary
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+@using ToDoListLibrary
 @model ToDoAspNetMvc.ViewModels.ToDoEntryViewModel
 
 @{
     ViewData["Title"] = "CreatCopy";
+    var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
 }
 
 <h1>Create copy</h1>
@@ -18,38 +20,7 @@
                 <span asp-validation-for="OwnerId" class="text-danger"></span>
                 </select>
             </div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="DueDate" class="control-label"></label>
-                <input asp-for="DueDate" class="form-control" />
-                <span asp-validation-for="DueDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Completed" class="control-label"></label>
-                <select asp-for="Completed" asp-items="Html.GetEnumSelectList<Status>()" class="form-control"></select>
-            </div>
-            @{
-                if (Model != null)
-                {
-                    foreach (var item in Model?.Fields)
-                    {
-                        <div class="form-group">
-                            <input asp-for="@item.Name" class="control-label" />
-                            <input asp-for="@item.Value" class="form-control" />
-                        </div>
-                    }
-                }
-            }
-
+            <partial name="_ToDoEntryDetails" />
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
@@ -65,4 +36,24 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(function () {
+            $('.DeleteField').click(function () {
+                var fieldid = $(this).attr("data-fieldid");
+                $.ajax({
+                    url: '@Url.Action("Delete", "Fields")' + `?id=${fieldid}`,
+                    headers: { "RequestVerificationToken": "@requestToken" },
+                    type: "POST",
+                    cache: false,
+                    async: true,
+                    success: function (data) {
+                        var field = document.getElementById(`Field_${fieldid}`);
+                        if (field) {
+                            field.style.display = "none";
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 }

@@ -68,16 +68,31 @@ namespace ToDoAspNetMvc.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OwnerId,Id,Title,Description,DueDate,Completed,Fields")] ToDoEntry toDoEntry)
+        public async Task<IActionResult> Create([Bind("OwnerId,Id,Title,Description,DueDate,Completed,Fields")] ToDoEntryViewModel vm)
         {
             if (ModelState.IsValid)
             {
+                var toDoEntry = new ToDoEntry()
+                {
+                    Id = vm.Id,
+                    OwnerId = vm.OwnerId,
+                    Title = vm.Title,
+                    Description = vm.Description,
+                    DueDate = vm.DueDate,
+                    Completed = vm.Completed,
+                    CreatedOn = DateTime.Now
+                };
                 toDoEntry.CreatedOn = DateTime.Now;
                 _context.Add(toDoEntry);
+                foreach (var field in vm.Fields)
+                {
+                    field.ToDoEntryId = toDoEntry.Id;
+                    _context.Add(field);
+                }
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Details), "ToDoLists", new { id = toDoEntry.OwnerId });
             }
-            return View(toDoEntry);
+            return View(vm);
         }
 
         // GET: ToDoEntries/Create
@@ -151,7 +166,17 @@ namespace ToDoAspNetMvc.Controllers
             {
                 return NotFound();
             }
-            return View(toDoEntry);
+            var vm = new ToDoEntryViewModel()
+            {
+                Id = toDoEntry.Id,
+                OwnerId = toDoEntry.OwnerId,
+                Title = toDoEntry.Title,
+                Description = toDoEntry.Description,
+                DueDate = toDoEntry.DueDate,
+                Completed = toDoEntry.Completed,
+                Fields = toDoEntry.Fields
+            };
+            return View(vm);
         }
 
         // POST: ToDoEntries/Edit/5
@@ -159,9 +184,10 @@ namespace ToDoAspNetMvc.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OwnerId,Id,Title,Description,DueDate,Completed,Fields")] ToDoEntry toDoEntry)
+        public async Task<IActionResult> Edit(int id, [Bind("OwnerId,Id,Title,Description,DueDate,Completed,Fields")] ToDoEntryViewModel vm)
         {
-            if (id != toDoEntry.Id)
+            var toDoEntry = await _context.Entities.Include(l => l.Fields).FirstOrDefaultAsync(e => e.Id == id);
+            if (toDoEntry == null)
             {
                 return NotFound();
             }
@@ -170,11 +196,17 @@ namespace ToDoAspNetMvc.Controllers
             {
                 try
                 {
-                    if (toDoEntry.Fields.Any())
-                    {
-                        foreach (var field in toDoEntry.Fields)
-                            _context.Update(field);
-                    }
+                    toDoEntry.OwnerId = vm.OwnerId;
+                    toDoEntry.Title = vm.Title;
+                    toDoEntry.Description = vm.Description;
+                    toDoEntry.DueDate = vm.DueDate;
+                    toDoEntry.Completed = vm.Completed;
+                    toDoEntry.Fields = vm.Fields;
+                    //if (toDoEntry.Fields.Any())
+                    //{
+                    //    foreach (var field in toDoEntry.Fields)
+                    //        _context.Update(field);
+                    //}
                     _context.Update(toDoEntry);
                     await _context.SaveChangesAsync();
                 }

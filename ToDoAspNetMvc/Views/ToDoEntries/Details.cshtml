@@ -9,22 +9,22 @@
 <div>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.DueDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DueDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Completed)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Completed)
         </dd>
         @foreach (var item in Model.Fields)
@@ -32,20 +32,14 @@
             <dt class="col-sm-2">
                 @Html.DisplayFor(model => item.Name)
             </dt>
-            <dd class="col-sm-2">
+            <dd class="col-sm-10">
                 @Html.DisplayFor(model => item.Value)
-            </dd>
-            <dd class="col-sm-8">
-                <form asp-controller="Fields" asp-action="Delete">
-                    <input type="hidden" value="@item.Id" />
-                    <button type="submit" class="btn btn-default btn-sm bi bi-backspace" style="color:red"></button>
-                </form>
             </dd>
         }
     </dl>
 </div>
 <div>
-    <a class="btn btn-default btn-lg" asp-action="Edit" asp-route-id="@Model.Id">
+    <a class="btn btn-default btn-lg" asp-action="Edit" asp-route-id="@Model.Id" data-toggle="tooltip" title="Edit">
         <span class="bi bi-pencil"></span>
     </a> |
     <a class="btn btn-default btn-lg" asp-action="Details" asp-controller="ToDoLists" asp-route-id="@Model.OwnerId">

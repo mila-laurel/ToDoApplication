@@ -42,10 +42,11 @@ namespace ToDoAspNetMvc.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var field = await _context.CustomFields.FindAsync(id);
-            var ownerId = field.ToDoEntryId;
+            //var ownerId = field.ToDoEntryId;
             _context.CustomFields.Remove(field);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Details", "ToDoEntries", new { id = ownerId });
+            return Ok();
+                //RedirectToAction("Details", "ToDoEntries", new { id = ownerId });
         }
     }
 }

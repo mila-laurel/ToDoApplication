@@ -1,8 +1,10 @@
-﻿@using ToDoListLibrary
-@model ToDoListLibrary.ToDoEntry
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+@using ToDoListLibrary
+@model ToDoAspNetMvc.ViewModels.ToDoEntryViewModel
 
 @{
     ViewData["Title"] = "Edit";
+    var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
 }
 
 <h1>Edit</h1>
@@ -13,7 +15,11 @@
         <form asp-action="Edit">
             <input type="hidden" asp-for="Id" />
             <input type="hidden" asp-for="OwnerId" />
-            <partial name="_ToDoEntryDetails" />            
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <partial name="_ToDoEntryDetails" />    
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
         </form>
     </div>
 </div>
@@ -26,4 +32,25 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script>
+        $(function () {
+            $('.DeleteField').click(function () {
+                var fieldid = $(this).attr("data-fieldid");
+                $.ajax({
+                    url: '@Url.Action("Delete", "Fields")' + `?id=${fieldid}`,
+                    headers: { "RequestVerificationToken": "@requestToken" },
+                    type: "POST",
+                    cache: false,
+                    async: true,
+                    success: function (data) {
+                        var field = document.getElementById(`Field_${fieldid}`);
+                        if (field) {
+                            field.style.display = "none";
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 }

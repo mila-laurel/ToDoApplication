@@ -10,7 +10,7 @@
     </a>
 </p>
 <div class="form-check form-switch"> 
-    <label class="form-check-label" for="ShowHidden">Show hidden lists</label>
+    <label class="form-check-label" for="ShowHidden">Show hidden lists test reload</label>
     @Html.CheckBox("ShowHidden", new { id = "ShowHidden" , @class = "form-check-input" })   
 </div>
 <table class="table">
@@ -36,7 +36,7 @@
                     @Html.DisplayFor(modelItem => item.Hide)
                 </td>
                 <td>
-                    <a class="btn btn-default btn-lg" asp-action="Delete" asp-route-id="@item.Id">
+                    <a class="btn btn-default btn-lg" asp-action="Delete" asp-route-id="@item.Id" data-toggle="tooltip" title="Delete">
                         <span class="bi bi-trash"></span>
                     </a>
                 </td>

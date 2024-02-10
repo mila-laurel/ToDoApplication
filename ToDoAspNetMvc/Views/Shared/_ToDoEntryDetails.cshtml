@@ -1,7 +1,6 @@
 ﻿@using ToDoListLibrary
-@model ToDoListLibrary.ToDoEntry
+@model ToDoAspNetMvc.ViewModels.ToDoEntryViewModel
 
-<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 <div class="form-group">
     <label asp-for="Title" class="control-label"></label>
     <input asp-for="Title" class="form-control" />
@@ -24,31 +23,23 @@
 @{
     if (Model != null)
     {
-        foreach (var item in Model?.Fields)
+        for (var i = 0; i < Model.Fields.Count; i++)
         {
-
-            <div class="form-group">
-                <div class="col-sm-6">
-                    <input asp-for="@item.Name" class="control-label" />
-                    <input asp-for="@item.Value" class="form-control" />
+            <div class="form-group" id="Field_@Model.Fields[i].Id">
+                <div style="display: flex">
+                    <input asp-for="Fields[i].Name" class="control-label" />
+                    <a class="btn btn-sm DeleteField" data-toggle="tooltip" title="Delete field" data-fieldid="Fields[i].Id">
+                        <span class="bi bi-backspace" style="color:red"></span>
+                    </a>
                 </div>
-                <div class="col-sm-6">
-                    <form  asp-controller="Fields" asp-action="Delete">
-                        <input type="hidden" asp-for="@item.Id" />
-                        <button type="submit" class="btn btn-default btn-sm bi bi-backspace" style="color:red" ></button>
-                    </form>
-                </div>
+                <input asp-for="Fields[i].Value" class="form-control" />
             </div>
         }
 
         <div>
-            <a class="btn btn-default btn-sm" asp-action="Create" asp-controller="Fields" asp-route-owner="@Model.Id">
+            <a class="btn btn-default CreateField" data-owner="@Model.Id" data-toggle="tooltip" title="Add new fields">
                 <span class="bi bi-plus-square"></span> Add new fields
             </a>
         </div>
     }
 }
-
-<div class="form-group">
-    <input type="submit" value="Save" class="btn btn-primary" />
-</div>

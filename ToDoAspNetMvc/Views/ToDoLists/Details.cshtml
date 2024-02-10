@@ -66,10 +66,10 @@
                     @Html.DisplayFor(modelItem => item.Completed)
                 </td>
                 <td>
-                    <a class="btn btn-default btn-lg" asp-controller="ToDoEntries" asp-action="Delete" asp-route-id="@item.Id">
+                    <a class="btn btn-default btn-lg" asp-controller="ToDoEntries" asp-action="Delete" asp-route-id="@item.Id" data-toggle="tooltip" title="Delete">
                         <span class="bi bi-trash"></span>
                     </a> |
-                    <a class="btn btn-default btn-lg" asp-controller="ToDoEntries" asp-action="CreateCopy" asp-route-initial="@item.Id">
+                    <a class="btn btn-default btn-lg" asp-controller="ToDoEntries" asp-action="CreateCopy" asp-route-initial="@item.Id" data-toggle="tooltip" title="Copy">
                         <span class="bi bi-copy"></span>
                     </a>
                 </td>
@@ -82,3 +82,21 @@
         <span class="bi bi-plus-circle"></span>New Item
     </a>
 </div>
+
+@section Scripts
+{
+    <script>
+        $(function () {
+            $('#ShowCompleted').change(function () {
+                var hiddenRows = document.getElementsByClassName("row-to-hide");
+                for (var i = 0; i < hiddenRows.length; i++) {
+                    if (document.getElementById('ShowCompleted').checked) {
+                        hiddenRows[i].style.display = "";
+                    } else {
+                        hiddenRows[i].style.display = "none";
+                    }
+                }
+            });
+        });
+    </script>
+}

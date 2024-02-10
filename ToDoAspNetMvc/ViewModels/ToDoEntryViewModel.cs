@@ -8,6 +8,8 @@ namespace ToDoAspNetMvc.ViewModels
 {
     public class ToDoEntryViewModel
     {
+        public int Id { get; set; }
+
         public int OwnerId { get; set; }
 
         public string Title { get; set; }
