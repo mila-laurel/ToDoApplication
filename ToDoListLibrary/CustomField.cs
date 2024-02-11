@@ -1,18 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ToDoListLibrary
+namespace ToDoListLibrary;
+
+public class CustomField
 {
-    public class CustomField
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
 
-        public int ToDoEntryId { get; set; }
+    public int ToDoEntryId { get; set; }
 
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        public string Value { get; set; }
-    }
+    public string Value { get; set; }
 }

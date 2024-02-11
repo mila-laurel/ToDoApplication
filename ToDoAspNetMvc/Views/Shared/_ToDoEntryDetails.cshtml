@@ -25,10 +25,10 @@
     {
         for (var i = 0; i < Model.Fields.Count; i++)
         {
-            <div class="form-group" id="Field_@Model.Fields[i].Id">
+            <div class="form-group field_form" id="Field_@Model.Fields[i].Id">
                 <div style="display: flex">
                     <input asp-for="Fields[i].Name" class="control-label" />
-                    <a class="btn btn-sm DeleteField" data-toggle="tooltip" title="Delete field" data-fieldid="Fields[i].Id">
+                    <a class="btn btn-sm DeleteField" data-toggle="tooltip" title="Delete field" data-fieldid="@Model.Fields[i].Id">
                         <span class="bi bi-backspace" style="color:red"></span>
                     </a>
                 </div>

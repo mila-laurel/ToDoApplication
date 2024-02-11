@@ -36,19 +36,28 @@
         $(function () {
             $('.DeleteField').click(function () {
                 var fieldid = $(this).attr("data-fieldid");
-                $.ajax({
-                    url: '@Url.Action("Delete", "Fields")' + `?id=${fieldid}`,
-                    headers: { "RequestVerificationToken": "@requestToken" },
-                    type: "POST",
-                    cache: false,
-                    async: true,
-                    success: function (data) {
-                        var field = document.getElementById(`Field_${fieldid}`);
-                        if (field) {
-                            field.style.display = "none";
+                if (fieldid) {
+                    $.ajax({
+                        url: '@Url.Action("Delete", "Fields")' + `?id=${fieldid}`,
+                        headers: { "RequestVerificationToken": "@requestToken" },
+                        type: "POST",
+                        cache: false,
+                        async: true,
+                        success: function (data) {
+                            var field = document.getElementById(`Field_${fieldid}`);
+                            if (field) {
+                                field.style.display = "none";
+                            }
                         }
+                    });
+                }
+                else {
+                    var fieldid = $(this).attr("data-fieldindex");
+                    var field = document.getElementById(`Field_Empty_${fieldid}`);
+                    if (field) {
+                        field.style.display = "none";
                     }
-                });
+                }
             });
         });
     </script>
@@ -56,19 +65,32 @@
         $(function () {
             $('.CreateField').click(function () {
                 var fieldid = $(this).attr("data-owner");
-                $.ajax({
-                    url: '@Url.Action("Delete", "Fields")' + `?id=${fieldid}`,
-                    headers: { "RequestVerificationToken": "@requestToken" },
-                    type: "POST",
-                    cache: false,
-                    async: true,
-                    success: function (data) {
-                        var field = document.getElementById(`Field_${fieldid}`);
-                        if (field) {
-                            field.style.display = "none";
-                        }
-                    }
-                });
+                var elements = document.getElementsByClassName("field_form");
+                var count = elements.length;
+                if (count === 0) { 
+                }
+                var newNameLabel = document.createElement("input")
+                var newSurnameLabel = document.createElement("input")
+                var newNameInput = document.createElement("input")
+                var newSurnameInput = document.createElement("input")
+                newNameLabel.setAttribute("for", "Field_" + count + "__Name")
+                newSurnameLabel.setAttribute("for", "Field_" + count + "__Value")
+                newNameLabel.innerHTML = "Name"
+                newSurnameLabel.innerHTML = "Value"
+                newNameInput.setAttribute("id", "Field_" + count + "__Name")
+                newSurnameInput.setAttribute("id", "Field_" + count + "__Value")
+                newNameInput.setAttribute("class", "name")
+                newSurnameInput.setAttribute("class", "surname")
+                newNameInput.setAttribute("name", "People[" + count + "].Name")
+                newSurnameInput.setAttribute("name", "People[" + count + "].Value")
+                newNameInput.setAttribute("type", "text")
+                newSurnameInput.setAttribute("type", "text")
+                document.getElementsByTagName("form")[0].append(newNameLabel)
+                document.getElementsByTagName("form")[0].append(newNameInput)
+                document.getElementsByTagName("form")[0].append(document.createElement("br"))
+                document.getElementsByTagName("form")[0].append(newSurnameLabel)
+                document.getElementsByTagName("form")[0].append(newSurnameInput)
+                document.getElementsByTagName("form")[0].append(document.createElement("br"))
             });
         });
     </script>

@@ -1,32 +1,31 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace ToDoListLibrary
+namespace ToDoListLibrary;
+
+public class ApplicationContext : DbContext
 {
-    public class ApplicationContext : DbContext
+    public ApplicationContext()
     {
-        public ApplicationContext()
-        {
-            Database.EnsureCreated();
-        }
+        Database.EnsureCreated();
+    }
 
-        public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
+    public ApplicationContext(DbContextOptions<ApplicationContext> options) : base(options) { }
 
-        public DbSet<ToDoList> Lists { get; set; }
+    public DbSet<ToDoList> Lists { get; set; }
 
-        public DbSet<ToDoEntry> Entities { get; set; }
+    public DbSet<ToDoEntry> Entities { get; set; }
 
-        public DbSet<CustomField> CustomFields { get; set; }
+    public DbSet<CustomField> CustomFields { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<ToDoEntry>()
-                .HasOne(p => p.Owner)
-                .WithMany(b => b.EntryList)
-                .OnDelete(DeleteBehavior.Cascade);
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ToDoEntry>()
+            .HasOne(p => p.Owner)
+            .WithMany(b => b.EntryList)
+            .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<CustomField>()
-                .HasOne<ToDoEntry>()
-                .WithMany(entry => entry.Fields);
-        }
+        modelBuilder.Entity<CustomField>()
+            .HasOne<ToDoEntry>()
+            .WithMany(entry => entry.Fields);
     }
 }

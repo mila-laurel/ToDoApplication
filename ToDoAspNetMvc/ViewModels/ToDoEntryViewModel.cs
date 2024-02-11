@@ -4,26 +4,25 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using ToDoListLibrary;
 
-namespace ToDoAspNetMvc.ViewModels
+namespace ToDoAspNetMvc.ViewModels;
+
+public class ToDoEntryViewModel
 {
-    public class ToDoEntryViewModel
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public int OwnerId { get; set; }
+    public int OwnerId { get; set; }
 
-        public string Title { get; set; }
+    public string Title { get; set; }
 
-        public string Description { get; set; }
+    public string Description { get; set; }
 
-        [DisplayName("Due date")]
-        public DateTime DueDate { get; set; }
+    [DisplayName("Due date")]
+    public DateTime DueDate { get; set; }
 
-        [DisplayName("Status")]
-        public Status Completed { get; set; } = Status.NotStarted;
+    [DisplayName("Status")]
+    public Status Completed { get; set; } = Status.NotStarted;
 
-        public List<SelectListItem> ToDoLists { set; get; }
+    public List<SelectListItem> ToDoLists { set; get; }
 
-        public List<CustomField> Fields { get; set; } = new List<CustomField>();
-    }
+    public List<CustomField> Fields { get; set; } = new List<CustomField>();
 }
