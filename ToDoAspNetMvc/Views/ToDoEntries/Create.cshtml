@@ -46,7 +46,7 @@
                         success: function (data) {
                             var field = document.getElementById(`Field_${fieldid}`);
                             if (field) {
-                                field.style.display = "none";
+                                field.remove();
                             }
                         }
                     });
@@ -55,7 +55,7 @@
                     var fieldid = $(this).attr("data-fieldindex");
                     var field = document.getElementById(`Field_Empty_${fieldid}`);
                     if (field) {
-                        field.style.display = "none";
+                        field.remove();
                     }
                 }
             });
@@ -67,30 +67,41 @@
                 var fieldid = $(this).attr("data-owner");
                 var elements = document.getElementsByClassName("field_form");
                 var count = elements.length;
-                if (count === 0) { 
-                }
-                var newNameLabel = document.createElement("input")
-                var newSurnameLabel = document.createElement("input")
-                var newNameInput = document.createElement("input")
-                var newSurnameInput = document.createElement("input")
-                newNameLabel.setAttribute("for", "Field_" + count + "__Name")
-                newSurnameLabel.setAttribute("for", "Field_" + count + "__Value")
-                newNameLabel.innerHTML = "Name"
-                newSurnameLabel.innerHTML = "Value"
-                newNameInput.setAttribute("id", "Field_" + count + "__Name")
-                newSurnameInput.setAttribute("id", "Field_" + count + "__Value")
-                newNameInput.setAttribute("class", "name")
-                newSurnameInput.setAttribute("class", "surname")
-                newNameInput.setAttribute("name", "People[" + count + "].Name")
-                newSurnameInput.setAttribute("name", "People[" + count + "].Value")
-                newNameInput.setAttribute("type", "text")
-                newSurnameInput.setAttribute("type", "text")
-                document.getElementsByTagName("form")[0].append(newNameLabel)
-                document.getElementsByTagName("form")[0].append(newNameInput)
-                document.getElementsByTagName("form")[0].append(document.createElement("br"))
-                document.getElementsByTagName("form")[0].append(newSurnameLabel)
-                document.getElementsByTagName("form")[0].append(newSurnameInput)
-                document.getElementsByTagName("form")[0].append(document.createElement("br"))
+                var divElement = document.createElement("div");
+                divElement.setAttribute("class", "form-group field-form");
+                var divId = "Field_Empty_" + count;
+                divElement.setAttribute("id", divId);
+                document.getElementsByTagName("form")[0].append(divElement)
+
+                var div2Element = document.createElement("div");
+                div2Element.setAttribute("style", "display: flex");
+                divElement.append(div2Element);
+
+                var newNameLabel = document.createElement("input");
+                newNameLabel.setAttribute("class", "control-label");
+                newNameLabel.setAttribute("type", "text");
+                newNameLabel.setAttribute("id", "Fields_" + count + "__Name");
+                newNameLabel.setAttribute("name", "Fields[" + count + "].Name");
+                div2Element.append(newNameLabel);
+
+                var button = document.createElement("a");
+                button.setAttribute("class", "btn btn-sm DeleteField");
+                button.setAttribute("data-toggle", "tooltip");
+                button.setAttribute("title", "Delete field");
+                button.setAttribute("data-fieldindex", count.toString());
+                div2Element.append(button);
+
+                var spanIcon = document.createElement("span");
+                button.setAttribute("class", "bi bi-backspace");
+                button.setAttribute("style", "color:red");
+                button.append(spanIcon);
+
+                var newValueInput = document.createElement("input");
+                newValueInput.setAttribute("class", "form-control");
+                newValueInput.setAttribute("type", "text");
+                newValueInput.setAttribute("id", "Fields_" + count + "__Value");
+                newValueInput.setAttribute("name", "Fields[" + count + "].Value");
+                divElement.append(newValueInput);
             });
         });
     </script>

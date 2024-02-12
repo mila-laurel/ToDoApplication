@@ -24,5 +24,5 @@ public class ToDoEntryViewModel
 
     public List<SelectListItem> ToDoLists { set; get; }
 
-    public List<CustomField> Fields { get; set; } = new List<CustomField>();
+    public List<CustomFieldViewModel> Fields { get; set; } = new List<CustomFieldViewModel>();
 }

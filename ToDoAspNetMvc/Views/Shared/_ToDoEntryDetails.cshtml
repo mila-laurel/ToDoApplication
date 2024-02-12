@@ -23,21 +23,23 @@
 @{
     if (Model != null)
     {
-        for (var i = 0; i < Model.Fields.Count; i++)
-        {
-            <div class="form-group field_form" id="Field_@Model.Fields[i].Id">
-                <div style="display: flex">
-                    <input asp-for="Fields[i].Name" class="control-label" />
-                    <a class="btn btn-sm DeleteField" data-toggle="tooltip" title="Delete field" data-fieldid="@Model.Fields[i].Id">
-                        <span class="bi bi-backspace" style="color:red"></span>
-                    </a>
+        <div id="CustomFields">
+            @for (var i = 0; i < Model.Fields.Count; i++)
+            {
+                <div class="form-group field_form" id="Field_@Model.Fields[i].Id">
+                    <div style="display: flex">
+                        <input asp-for="Fields[i].Name" class="control-label" />
+                        <a class="btn btn-sm DeleteField" data-toggle="tooltip" title="Delete field" data-fieldid="@Model.Fields[i].Id" onclick="deleteField()">
+                            <span class="bi bi-backspace" style="color:red"></span>
+                        </a>
+                    </div>
+                    <input asp-for="Fields[i].Value" class="form-control" />
                 </div>
-                <input asp-for="Fields[i].Value" class="form-control" />
-            </div>
-        }
+            }
+        </div>
 
         <div>
-            <a class="btn btn-default CreateField" data-owner="@Model.Id" data-toggle="tooltip" title="Add new fields">
+            <a class="btn btn-default CreateField" data-owner="@Model.Id" data-toggle="tooltip" title="Add new fields" onclick="createField()">
                 <span class="bi bi-plus-square"></span> Add new fields
             </a>
         </div>
