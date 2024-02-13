@@ -20,28 +20,28 @@
     <label asp-for="Completed" class="control-label"></label>
     <select asp-for="Completed" asp-items="Html.GetEnumSelectList<Status>()" class="form-control"></select>
 </div>
-@{
-    if (Model != null)
-    {
-        <div id="CustomFields">
+<div id="CustomFields">
+    @{
+        if (Model != null)
+        {
             @for (var i = 0; i < Model.Fields.Count; i++)
             {
                 <div class="form-group field_form" id="Field_@Model.Fields[i].Id">
+                    <input type="hidden" asp-for="Fields[i].Id" />
                     <div style="display: flex">
                         <input asp-for="Fields[i].Name" class="control-label" />
-                        <a class="btn btn-sm DeleteField" data-toggle="tooltip" title="Delete field" data-fieldid="@Model.Fields[i].Id" onclick="deleteField()">
+                        <a class="btn btn-sm DeleteField" data-toggle="tooltip" title="Delete field" data-fieldid="@Model.Fields[i].Id" onclick="deleteField(this)">
                             <span class="bi bi-backspace" style="color:red"></span>
                         </a>
                     </div>
                     <input asp-for="Fields[i].Value" class="form-control" />
                 </div>
             }
-        </div>
-
-        <div>
-            <a class="btn btn-default CreateField" data-owner="@Model.Id" data-toggle="tooltip" title="Add new fields" onclick="createField()">
-                <span class="bi bi-plus-square"></span> Add new fields
-            </a>
-        </div>
+        }
     }
-}
+</div>
+<div>
+    <a class="btn btn-default CreateField" data-toggle="tooltip" title="Add new fields" onclick="createField()">
+        <span class="bi bi-plus-square"></span> Add new fields
+    </a>
+</div>

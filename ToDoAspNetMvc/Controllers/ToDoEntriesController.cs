@@ -167,11 +167,8 @@ public class ToDoEntriesController : Controller
             try
             {
                 toDoEntry = _mapper.Map(vm, toDoEntry);
-                foreach (var field in toDoEntry.Fields.ToList())
-                {
-                    if (!vm.Fields.Any(f => f.Id == field.Id))
-                        _context.Remove(field);
-                }
+
+                _context.RemoveRange(toDoEntry.Fields.Select(f => vm.Fields.All(vmf => f.Id != vmf.Id)));
 
                 foreach (var modelField in vm.Fields)
                 {
@@ -192,7 +189,7 @@ public class ToDoEntriesController : Controller
                     }
                 }
 
-                _context.Update(toDoEntry);
+                //_context.Update(toDoEntry);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)

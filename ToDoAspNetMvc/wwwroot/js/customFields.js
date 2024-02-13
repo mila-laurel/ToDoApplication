@@ -1,12 +1,11 @@
 ﻿function createField() {
-    var fieldid = $(this).attr("data-owner");
     var elements = document.getElementsByClassName("field_form");
     var count = elements.length;
     var divElement = document.createElement("div");
     divElement.setAttribute("class", "form-group field-form");
     var divId = "Field_Empty_" + count;
     divElement.setAttribute("id", divId);
-    document.getElementById("CustomFields")[0].append(divElement)
+    document.getElementById("CustomFields").append(divElement)
 
     var div2Element = document.createElement("div");
     div2Element.setAttribute("style", "display: flex");
@@ -24,6 +23,7 @@
     button.setAttribute("data-toggle", "tooltip");
     button.setAttribute("title", "Delete field");
     button.setAttribute("data-fieldindex", count.toString());
+    button.setAttribute("onclick", "deleteField()");
     div2Element.append(button);
 
     var spanIcon = document.createElement("span");
@@ -39,19 +39,28 @@
     divElement.append(newValueInput);
 }
 
-function deleteField() {
-    var fieldid = $(this).attr("data-fieldid");
-    $.ajax({
-        url: '@Url.Action("Delete", "Fields")' + `?id=${fieldid}`,
-        headers: { "RequestVerificationToken": "@requestToken" },
-        type: "POST",
-        cache: false,
-        async: true,
-        success: function (data) {
-            var field = document.getElementById(`Field_${fieldid}`);
-            if (field) {
-                field.style.display = "none";
+function deleteField(e) {
+    var fieldid = e.getAttribute("data-fieldid");
+    if (fieldid) {
+        $.ajax({
+            url: `Fields/Delete?id=${fieldid}`,
+            headers: { "RequestVerificationToken": "@requestToken" },
+            type: "POST",
+            cache: false,
+            async: true,
+            success: function (data) {
+                var field = document.getElementById(`Field_${fieldid}`);
+                if (field) {
+                    field.remove();
+                }
             }
+        });
+    }
+    else {
+        var fieldid = e.getAttribute("data-fieldindex");
+        var field = document.getElementById(`Field_Empty_${fieldid}`);
+        if (field) {
+            field.remove();
         }
-    });
+    }
 }
