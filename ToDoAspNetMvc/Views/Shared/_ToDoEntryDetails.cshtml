@@ -1,5 +1,10 @@
-﻿@using ToDoListLibrary
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+@using ToDoListLibrary
 @model ToDoAspNetMvc.ViewModels.ToDoEntryViewModel
+
+@{
+    var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+}
 
 <div class="form-group">
     <label asp-for="Title" class="control-label"></label>
@@ -30,7 +35,7 @@
                     <input type="hidden" asp-for="Fields[i].Id" />
                     <div style="display: flex">
                         <input asp-for="Fields[i].Name" class="control-label" />
-                        <a class="btn btn-sm DeleteField" data-toggle="tooltip" title="Delete field" data-fieldid="@Model.Fields[i].Id" onclick="deleteField(this)">
+                        <a class="btn btn-sm DeleteField" data-toggle="tooltip" title="Delete field" data-fieldid="@Model.Fields[i].Id" onclick="deleteField(this, @requestToken)">
                             <span class="bi bi-backspace" style="color:red"></span>
                         </a>
                     </div>

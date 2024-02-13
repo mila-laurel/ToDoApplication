@@ -23,7 +23,7 @@
     button.setAttribute("data-toggle", "tooltip");
     button.setAttribute("title", "Delete field");
     button.setAttribute("data-fieldindex", count.toString());
-    button.setAttribute("onclick", "deleteField()");
+    button.addEventListener(onclick, deleteField(this));
     div2Element.append(button);
 
     var spanIcon = document.createElement("span");
@@ -39,12 +39,12 @@
     divElement.append(newValueInput);
 }
 
-function deleteField(e) {
+function deleteField(e, token) {
     var fieldid = e.getAttribute("data-fieldid");
     if (fieldid) {
         $.ajax({
-            url: `Fields/Delete?id=${fieldid}`,
-            headers: { "RequestVerificationToken": "@requestToken" },
+            url: `/Fields/Delete?id=${fieldid}`,
+            headers: { "RequestVerificationToken": token },
             type: "POST",
             cache: false,
             async: true,

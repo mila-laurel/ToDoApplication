@@ -1,10 +1,8 @@
-﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
-@using ToDoListLibrary
+﻿@using ToDoListLibrary
 @model ToDoAspNetMvc.ViewModels.ToDoEntryViewModel
 
 @{
     ViewData["Title"] = "Edit";
-    var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
 }
 
 <h1>Edit</h1>

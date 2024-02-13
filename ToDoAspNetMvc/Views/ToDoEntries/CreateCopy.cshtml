@@ -1,10 +1,8 @@
-﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
-@using ToDoListLibrary
+﻿@using ToDoListLibrary
 @model ToDoAspNetMvc.ViewModels.ToDoEntryViewModel
 
 @{
     ViewData["Title"] = "CreatCopy";
-    var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
 }
 
 <h1>Create copy</h1>
