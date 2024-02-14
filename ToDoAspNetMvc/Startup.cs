@@ -23,7 +23,7 @@ public class Startup
     {
         services.AddControllersWithViews();
         services.AddDbContext<ApplicationContext>(opts => {
-            opts.UseSqlServer(Configuration["ConnectionStrings:SportsStoreConnection"]);
+            opts.UseSqlServer(Configuration["ConnectionStrings:Connection"]);
         });
         services.AddScoped<IRepository, Repository>();
         IMapper mapper = MappingConfig.RegisterMap().CreateMapper();

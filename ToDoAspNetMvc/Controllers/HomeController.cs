@@ -20,7 +20,7 @@ public class HomeController : Controller
         _logger = logger;
         _context = context;
     }
-
+    
     public async Task<IActionResult> Index()
     {
         var today = await _context.Entities
@@ -30,11 +30,6 @@ public class HomeController : Controller
             .Where(l => l.Completed != Status.Completed && l.DueDate.Date < DateTime.Today)
             .CountAsync();
         return View((today, pastDueDate));
-    }
-
-    public IActionResult Privacy()
-    {
-        return View();
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

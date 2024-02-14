@@ -10,7 +10,8 @@ public class MappingConfig
     {
         var mappingConfig = new MapperConfiguration(config =>
         {
-            config.CreateMap<ToDoEntryViewModel, ToDoEntry>().ReverseMap();
+            config.CreateMap<ToDoEntryViewModel, ToDoEntry>().ForMember(e => e.Fields, opt => opt.Ignore());
+            config.CreateMap<ToDoEntry, ToDoEntryViewModel>();
             config.CreateMap<CustomFieldViewModel, CustomField>().ReverseMap();            
         });
         return mappingConfig;

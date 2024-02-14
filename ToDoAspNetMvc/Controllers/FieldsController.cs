@@ -42,6 +42,10 @@ public class FieldsController : Controller
     public async Task<IActionResult> Delete(int id)
     {
         var field = await _context.CustomFields.FindAsync(id);
+        if (field == null)
+        {
+            return NotFound();
+        }
         //var ownerId = field.ToDoEntryId;
         _context.CustomFields.Remove(field);
         await _context.SaveChangesAsync();

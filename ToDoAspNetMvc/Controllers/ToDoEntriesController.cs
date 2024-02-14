@@ -80,8 +80,9 @@ public class ToDoEntriesController : Controller
             _context.Add(toDoEntry);
             foreach (var field in vm.Fields)
             {
-                field.ToDoEntryId = toDoEntry.Id;
-                _context.Add(field);
+                var entityField = _mapper.Map<CustomField>(field);
+                entityField.ToDoEntryId = toDoEntry.Id;
+                _context.Add(entityField);
             }
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Details), "ToDoLists", new { id = toDoEntry.OwnerId });
@@ -122,8 +123,9 @@ public class ToDoEntriesController : Controller
             _context.Add(toDoEntry);
             foreach (var field in vm.Fields)
             {
-                field.ToDoEntryId = toDoEntry.Id;
-                _context.Add(field);
+                var entityField = _mapper.Map<CustomField>(field);
+                toDoEntry.Fields.Add(entityField);
+                _context.Add(entityField);
             }
 
             await _context.SaveChangesAsync();
@@ -166,30 +168,24 @@ public class ToDoEntriesController : Controller
         {
             try
             {
-                toDoEntry = _mapper.Map(vm, toDoEntry);
-
-                _context.RemoveRange(toDoEntry.Fields.Select(f => vm.Fields.All(vmf => f.Id != vmf.Id)));
+                _mapper.Map(vm, toDoEntry);
 
                 foreach (var modelField in vm.Fields)
                 {
                     var existingField = toDoEntry.Fields.Where(f => f.Id == modelField.Id && f.Id != default)
                         .FirstOrDefault();
-
                     if (existingField != null)
+                    {
+                        _mapper.Map(modelField, existingField);
                         _context.Update(existingField);
+                    }
                     else
                     {
-                        var newField = new CustomField()
-                        {
-                            Name = modelField.Name,
-                            Value = modelField.Value,
-                            ToDoEntryId = id
-                        };
+                        var newField = _mapper.Map<CustomField>(modelField);
+                        newField.ToDoEntryId = id;
                         _context.Add(newField);
                     }
                 }
-
-                //_context.Update(toDoEntry);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
