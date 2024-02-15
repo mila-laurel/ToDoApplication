@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using ToDoListLibrary;
 
-namespace ToDoAspNetMvc.ViewModels;
+namespace ToDoAspNetMvc.Models;
 
 public class ToDoEntryViewModel
 {

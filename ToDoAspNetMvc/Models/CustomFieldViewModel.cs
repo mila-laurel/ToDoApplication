@@ -1,4 +1,4 @@
-﻿namespace ToDoAspNetMvc.ViewModels;
+﻿namespace ToDoAspNetMvc.Models;
 
 public class CustomFieldViewModel
 {

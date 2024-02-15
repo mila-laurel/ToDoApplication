@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ToDoAspNetMvc.ViewModels;
+using ToDoAspNetMvc.Models;
 using ToDoListLibrary;
 
 namespace ToDoAspNetMvc;
