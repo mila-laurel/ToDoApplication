@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using ToDoListApplication.Service;
 using ToDoListLibrary;
 
 namespace ToDoAspNetMvc;
@@ -29,6 +30,7 @@ public class Startup
         IMapper mapper = MappingConfig.RegisterMap().CreateMapper();
         services.AddSingleton(mapper);
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+        services.AddHostedService<Notifications>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
