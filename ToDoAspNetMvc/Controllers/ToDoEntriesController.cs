@@ -177,7 +177,6 @@ public class ToDoEntriesController : Controller
                     if (existingField != null)
                     {
                         _mapper.Map(modelField, existingField);
-                        _context.Update(existingField);
                     }
                     else
                     {
@@ -201,7 +200,7 @@ public class ToDoEntriesController : Controller
             }
             return RedirectToAction(nameof(Details), "ToDoLists", new { id = toDoEntry.OwnerId });
         }
-        return View(toDoEntry);
+        return View(vm);
     }
 
     // GET: ToDoEntries/Delete/5
@@ -232,6 +231,35 @@ public class ToDoEntriesController : Controller
         _context.Entities.Remove(toDoEntry);
         await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Details), "ToDoLists", new { id = ownerId });
+    }
+
+    public async Task<IActionResult> MarkCompleted(int id)
+    {
+        var toDoEntry = await _context.Entities.FindAsync(id);
+        if (toDoEntry == null)
+        {
+            return NotFound();
+        }
+        var vm = new MarkCompletedViewModel { Id = toDoEntry.Id, Title = toDoEntry.Title, IsCompleted = toDoEntry.Completed == Status.Completed };
+        return View(vm);
+    }
+
+    [HttpPost, ActionName("MarkCompleted")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> MarkCompletedConfirmed(int id, [Bind("Id,IsCompleted")] MarkCompletedViewModel vm)
+    {
+        var toDoEntry = await _context.Entities.FindAsync(id);
+        if (ModelState.IsValid)
+        {
+            toDoEntry.Completed = vm.IsCompleted ? Status.Completed : Status.InProgress; 
+            await _context.SaveChangesAsync();
+            if (toDoEntry == null)
+            {
+                return NotFound();
+            }
+        }
+
+        return View(vm);
     }
 
     private bool ToDoEntryExists(int id)

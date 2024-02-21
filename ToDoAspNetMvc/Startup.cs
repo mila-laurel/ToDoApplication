@@ -26,11 +26,11 @@ public class Startup
         services.AddDbContext<ApplicationContext>(opts => {
             opts.UseSqlServer(Configuration["ConnectionStrings:Connection"]);
         });
-        services.AddScoped<IRepository, Repository>();
         IMapper mapper = MappingConfig.RegisterMap().CreateMapper();
         services.AddSingleton(mapper);
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         services.AddHostedService<Notifications>();
+        services.AddSingleton<TelegramService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

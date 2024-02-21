@@ -10,9 +10,10 @@ public class ToDoList
     {
         
     }
+
     public ToDoList(string title)
     {
-        this.Title = title;
+        Title = title;
     }
 
     [Key]

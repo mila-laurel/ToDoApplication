@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,8 +12,9 @@ namespace ToDoListApplication.Service;
 public class Notifications : BackgroundService
 {
     private readonly ILogger<Notifications> _logger;
-    private readonly ApplicationContext _context;
-    private TimeSpan CheckInterval { get; set; } = TimeSpan.FromMinutes(10);
+    private readonly TelegramService _telegramService;
+    private readonly IServiceProvider _provider;
+    private TimeSpan CheckInterval { get; set; } = TimeSpan.FromMinutes(1);
     private TimeSpan DueTime { get; set; } = TimeSpan.FromSeconds(0);
     private DateTime PlanDate { get; set; }
     protected DateTime NextPlanDate()
@@ -21,11 +23,13 @@ public class Notifications : BackgroundService
     }
 
 
-    public Notifications(ILogger<Notifications> logger, ApplicationContext context)
+    public Notifications(ILogger<Notifications> logger, IServiceProvider provider, TelegramService telegram)
     {
         _logger = logger;
-        _context = context;
+        _provider = provider;
+        _telegramService = telegram;
     }
+
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         if (DueTime > TimeSpan.Zero)
@@ -41,12 +45,21 @@ public class Notifications : BackgroundService
 
                 if (PlanDate <= currentDateTime)
                 {
+                    using var scope = _provider.CreateScope();
+                    var context = scope.ServiceProvider.GetService<ApplicationContext>();
                     string message = string.Empty;
-                    var today = await _context.Entities
+                    var today = await context.Entities
                    .Where(l => l.Completed != Status.Completed && l.DueDate.Date == DateTime.Today)
-                   .CountAsync();
-                    if (today > 0)
-                        message = $"Check your today tasks - you have {today} tasks which due date is today";
+                   .ToListAsync();
+                    if (today.Count > 0)
+                    {
+                        message = $"Check your today tasks - you have {today.Count} tasks which due date is today";
+                        await _telegramService.SendAsync(message);
+                        foreach (var item in today)
+                        {
+                            await _telegramService.SendAsync(item.Title, item.Id);
+                        }
+                    }
                 }
                 else
                 {
@@ -57,7 +70,7 @@ public class Notifications : BackgroundService
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, null);
+                _logger.LogError(ex, ex.Message);
             }
 
             await Task.Delay(CheckInterval, stoppingToken);

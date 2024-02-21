@@ -46,3 +46,10 @@ button.accept-policy {
   white-space: nowrap;
   line-height: 60px;
 }
+
+.big-green {
+    width: 4.2em;
+    height: 4.2em;
+    color: green
+}
+
